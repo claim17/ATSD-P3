@@ -15,4 +15,4 @@ jobs:
       # We lunch the tests
       - name: Launch tests with Maven
         run: chmod +x ./mvnw 
-        run: ./mvnw test
+         ./mvnw test
