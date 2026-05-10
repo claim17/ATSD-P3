@@ -11,7 +11,7 @@ jobs:
 
     steps:
       # We checkout the repository's code
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       # We lunch the tests
       - name: Launch tests with Maven
         run: |
