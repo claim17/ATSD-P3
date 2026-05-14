@@ -11,6 +11,6 @@ public class EquipoTest {
     @Test
     public void crearEquipo() {
         Equipo equipo = new Equipo("Project P1");
-        assertThat(equipo.getNombre()).isEqualTo("Project P2");
+        assertThat(equipo.getNombre()).isEqualTo("Project P1");
     }
 }
