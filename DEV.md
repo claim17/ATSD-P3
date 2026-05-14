@@ -16,3 +16,7 @@ El desarrollo del Service y Model se tienen que desarrollar siguiente el TDD, qu
 
 
 Se debe realizar un commit por cada fase Test-Código. Si refactorizas, tendrás que hacerlo en otro commit adicional.
+
+
+
+He dado permisos al ./mvn ya que este no los tenia , tambien ya esta puesta la inplementacion de postgresSQL segun indica el documento del profesor , y ya funcionan ambos tests ya que el de integracion llevava dadno fallos 2 dias.
