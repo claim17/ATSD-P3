@@ -9,6 +9,8 @@ import todolist.model.Usuario;
 
 import javax.transaction.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Sql(scripts = "/clean-db.sql")
@@ -102,5 +104,20 @@ public class EquipoTest {
         assertThat(equipo.getUsuarios()).contains(usuario);
         assertThat(usuario.getEquipos()).hasSize(1);
         assertThat(usuario.getEquipos()).contains(equipo);
+    }
+
+    @Test
+    @Transactional
+    public void comprobarFindAll(){
+        // GIVEN
+        // Dos equipos en la base de datos.
+        equipoRepository.save(new Equipo("Project 2"));
+        equipoRepository.save(new Equipo("Project 3"));
+
+        //WHEN
+        List<Equipo> equipos = equipoRepository.findAll();
+
+        //THEN
+        assertThat(equipos).hasSize(2);
     }
 }
