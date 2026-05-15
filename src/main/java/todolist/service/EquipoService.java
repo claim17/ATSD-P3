@@ -10,6 +10,11 @@ import todolist.model.Equipo;
 import todolist.repository.EquipoRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class EquipoService {
     Logger logger = LoggerFactory.getLogger(EquipoService.class);
@@ -37,6 +42,18 @@ public class EquipoService {
             return null;
         }
         else return modelMapper.map(equipo, EquipoData.class);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EquipoData> findAllOrdenadosPorNombre() {
+        logger.debug("Recuperando todos los equipos de las base de datos");
+        List<Equipo> equipos = (List<Equipo>) equipoRepository.findAll();
+        List<EquipoData> equiposData = equipos.stream()
+                .map(e -> modelMapper.map(e, EquipoData.class))
+                .collect(Collectors.toList());
+        equiposData.sort(Comparator.comparing(EquipoData::getNombre));
+
+        return equiposData;
     }
 
 }
