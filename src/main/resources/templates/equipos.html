@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Equipos</title>
+    <!-- Estilos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Aquí deberías incluir tu navbar, por ejemplo: -->
+    <!-- <div th:replace="fragments/navbar :: navbar"></div> -->
+
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col-12">
+                <h2>Equipos de la Empresa</h2>
+                <p class="text-muted">Consulta la estructura y los proyectos en curso.</p>
+            </div>
+        </div>
+        
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre del Equipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="equipo : ${equipos}">
+                    <td th:text="${equipo.id}">1</td>
+                    <td>
+                        <a th:href="@{/equipos/{id}(id=${equipo.id})}" th:text="${equipo.nombre}" class="font-weight-bold">Nombre</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

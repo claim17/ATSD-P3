@@ -66,3 +66,22 @@ He implementado la funcionalidad completa de gestión de equipos siguiendo la me
 - grabarYBuscarEquipo
 - comprobarIgualdadEquipos
 - comprobarRelacionBaseDatos
+
+## Desarrollo del issue "Vistas, Controladores y Tests - Lista de Equipos"
+Se ha completado la funcionalidad de "Lista de Equipos" desarrollando la capa de presentación, el enrutamiento y sus pruebas unitarias.
+
+### Archivos creados
+- **Controlador:** `src/main/java/todolist/controller/EquipoController.java`
+- **Vistas:** `src/main/resources/templates/equipos.html` y `src/main/resources/templates/equipoDetalle.html`
+- **Tests:** `src/test/java/todolist/controller/EquipoControllerTest.java`
+
+### Endpoints Implementados (`EquipoController`)
+- **`GET /equipos`**: Muestra el listado de todos los equipos de la empresa ordenados alfabéticamente. Protegido por comprobación de sesión.
+- **`GET /equipos/{id}`**: Muestra los detalles de un equipo en concreto junto a la lista de usuarios miembros. Protegido por comprobación de sesión.
+
+### Tests Unitarios (`EquipoControllerTest`)
+- **Accesos autorizados:** Verificación de renderizado de las plantillas correctas y carga de datos en el `Model` (`equipos`, `equipo`, `usuarios`) estando logueado.
+- **Accesos denegados:** Comprobación de seguridad asegurando la redirección (HTTP 3xx) a `/login` para usuarios sin sesión activa en ambas rutas.
+
+## Desarrollo - Inicialización de Datos de Prueba (Seed)
+Se ha creado una clase `DataSeeder` (`CommandLineRunner`) para generar automáticamente 3 equipos ("Equipo Alfa", "Equipo Beta", "Equipo Gamma") en el arranque de la aplicación, con el objetivo de poder visualizar y probar rápidamente el listado de equipos. Además, se añadió el enlace correspondiente en los fragmentos de la barra de navegación.
