@@ -29,9 +29,15 @@ public class EquipoData {
         if (this == o){return true;}
         if (!(o instanceof EquipoData)) return false;
         EquipoData that = (EquipoData) o;
-        return Objects.equals(getId(), that.getId());
+        if (id != null && that.id != null)
+            return Objects.equals(id, that.id);
+        //Si no comparamos campos obligatorios.
+        return nombre.equals(that.nombre);
     }
 
     @Override
-    public int hashCode() {return Objects.hash(getId());}
+    public int hashCode() {
+        // hash basado en campos obligatorios.
+        return Objects.hash(nombre);
+    }
 }
