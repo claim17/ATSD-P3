@@ -6,9 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import todolist.dto.EquipoData;
+import todolist.dto.UsuarioData;
 import todolist.model.Equipo;
+import todolist.model.Usuario;
 import todolist.repository.EquipoRepository;
 import org.springframework.transaction.annotation.Transactional;
+import todolist.repository.UsuarioRepository;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +24,9 @@ public class EquipoService {
 
     @Autowired
     EquipoRepository equipoRepository;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -54,6 +60,31 @@ public class EquipoService {
         equiposData.sort(Comparator.comparing(EquipoData::getNombre));
 
         return equiposData;
+    }
+
+    @Transactional
+    public void addUsuarioAEquipo(Long teamId, Long userId){
+        logger.debug("Agregando usuario " + userId + " al equipo " + teamId);
+        Equipo equipo = equipoRepository.findById(teamId).orElse(null);
+        if(equipo == null){
+            logger.error("No existe equipo con id: " + teamId);
+            throw new EquipoServiceException("Equipo con id = " + teamId + " no existe.");
+        }
+        Usuario usuario = usuarioRepository.findById(userId).orElse(null);
+        if(usuario == null){
+            logger.error("Usuario con id: " + userId + " inexistente al agregarlo al equipo " + teamId);
+            throw new EquipoServiceException("Usuario con id = " + userId + " no existe.");
+        }
+        equipo.addUsuario(usuario);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UsuarioData> usuariosEquipo(Long id){
+        Equipo equipo = equipoRepository.findById(id).orElse(null);
+        //Hacemos uso de Java Stream API para mapear la lista de entidades a DTO's.
+        return equipo.getUsuarios().stream()
+                .map(u->modelMapper.map(u, UsuarioData.class))
+                .collect(Collectors.toList());
     }
 
 }
