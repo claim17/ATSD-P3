@@ -5,14 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
-import static org.assertj.core.api.Assertions.as;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import todolist.dto.EquipoData;
 import todolist.dto.UsuarioData;
 import todolist.model.Equipo;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Sql(scripts = "/clean-db.sql")
@@ -73,7 +73,7 @@ public class EquipoServiceTest {
     }
 
     @Test
-    public void recuperarEquiposDeUsuario(){
+    public void recuperarEquiposDeUsuarioTest(){
         // GIVEN
         // Un usuario y dos equipos en la base de datos.
         UsuarioData usuario = new UsuarioData();
@@ -94,5 +94,19 @@ public class EquipoServiceTest {
         assertThat(equipos).hasSize(2);
         assertThat(equipos.get(0).getNombre()).isEqualTo("Project 1");
         assertThat(equipos.get(1).getNombre()).isEqualTo("Project 2");
+    }
+
+    @Test
+    public void comprobarExcepcionesTest(){
+        // Comprobamos las excepciones lanzadas por metodos.
+        // recuperarEquipo, addUsuarioAEquipo, usuariosEquipo, equiposUsuario.
+        assertThatThrownBy(() -> equipoService.recuperarEquipo(1L)).isInstanceOf(EquipoServiceException.class);
+        assertThatThrownBy(() -> equipoService.addUsuarioAEquipo(1L, 1L)).isInstanceOf(EquipoServiceException.class);
+        assertThatThrownBy(() -> equipoService.usuariosEquipo(1L)).isInstanceOf(EquipoServiceException.class);
+        assertThatThrownBy(() -> equipoService.equiposUsurio(1L)).isInstanceOf(EquipoServiceException.class);
+
+        // Creamos un equipo pero no un usuario y comprobamos que tambien se lanza un excepcion.
+        EquipoData equipo = equipoService.crearEquipo("Project 1");
+        assertThatThrownBy(() -> equipoService.addUsuarioAEquipo(equipo.getId(), 1L)).isInstanceOf(EquipoServiceException.class);
     }
 }

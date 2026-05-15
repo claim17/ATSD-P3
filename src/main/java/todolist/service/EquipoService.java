@@ -46,7 +46,7 @@ public class EquipoService {
         Equipo equipo = equipoRepository.findById(id).orElse(null);
         if(equipo == null) {
             logger.debug("El equipo con id = " + id + " no existe.");
-            return null;
+            throw new EquipoServiceException("No se ha podido encontrar el equipo con id: "+ id + ". ID incorrecto o el equipo no existe.");
         }
         else return modelMapper.map(equipo, EquipoData.class);
     }
