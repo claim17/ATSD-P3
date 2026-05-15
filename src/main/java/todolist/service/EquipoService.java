@@ -16,6 +16,7 @@ import todolist.repository.UsuarioRepository;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,10 +81,28 @@ public class EquipoService {
 
     @Transactional(readOnly = true)
     public List<UsuarioData> usuariosEquipo(Long id){
+        logger.debug("Devolviendo todos los usuarios del equipo "+ id);
         Equipo equipo = equipoRepository.findById(id).orElse(null);
+        if(equipo == null){
+            logger.error("Error en equipo service - No encontrado el equipo con id: " + id);
+            throw new EquipoServiceException("No existe el equipo con id: " + id);
+        }
         //Hacemos uso de Java Stream API para mapear la lista de entidades a DTO's.
         return equipo.getUsuarios().stream()
                 .map(u->modelMapper.map(u, UsuarioData.class))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<EquipoData> equiposUsurio(Long userId){
+        logger.debug("Recuperando los equipos del usuario con id: " + userId);
+        Usuario usuario = usuarioRepository.findById(userId).orElse(null);
+        if (usuario == null){
+            logger.error("El usuario con id: " + userId + " no existe.");
+            throw new EquipoServiceException("No se ha podido encontrar al usuario " + userId + " , no se buscar los equipos a los que pertenece este usuario.");
+        }
+        return usuario.getEquipos().stream()
+                .map(e->modelMapper.map(e, EquipoData.class))
                 .collect(Collectors.toList());
     }
 
