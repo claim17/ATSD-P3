@@ -85,3 +85,28 @@ Se ha completado la funcionalidad de "Lista de Equipos" desarrollando la capa de
 
 ## Desarrollo - Inicialización de Datos de Prueba (Seed)
 Se ha creado una clase `DataSeeder` (`CommandLineRunner`) para generar automáticamente 3 equipos ("Equipo Alfa", "Equipo Beta", "Equipo Gamma") en el arranque de la aplicación, con el objetivo de poder visualizar y probar rápidamente el listado de equipos. Además, se añadió el enlace correspondiente en los fragmentos de la barra de navegación.
+
+## Pasos para configurar la Base de Datos.
+
+- Ejecución del Docker (contenedor de una imagen de Postgres):
+```
+docker run -d -p 5432:5432 --name postgres-develop -e POSTGRES_USER=atsd -e POSTGRES_PASSWORD=atsd -e POSTGRES_DB=atsd postgres:13
+```
+- Inicio de la aplicación (probar):
+  - Si lo haces shell:
+  ````
+    mvn spring-boot:run '-Dspring-boot.run.profiles=postgres'
+  ````
+  - Si lo haces con cmd:
+  ```
+    mvn spring-boot:run "-Dspring-boot.run.profiles=postgres"
+  ```
+- Configuramos el IntelliJ para lanzarlo desde run.
+- Lanzamos los tests en PostgresSQL.
+```
+  docker run -d -p 5432:5432 --name postgres-test -e POSTGRES_USER=atsd -e POSTGRES_PASSWORD=atsd -e POSTGRES_DB=atsd_test postgres:13
+```
+y después:
+```
+  mvn test '-Dspring.profiles.active=postgres'
+```
