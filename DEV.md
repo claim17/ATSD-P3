@@ -110,3 +110,58 @@ y después:
 ```
   mvn test '-Dspring.profiles.active=postgres'
 ```
+
+## Desarrollo del issue "Gestión de Membresía de Equipo"
+
+Se ha implementado la funcionalidad completa de gestión de membresía de equipo, permitiendo a los usuarios crear nuevos equipos, unirse y salir de ellos.
+
+### Correcciones de Vistas
+
+**Corregidas:**
+- **formLogin.html**: Se removió la barra de navegación que no debería estar visible en la página de login.
+- **equipos.html**: Se agregó la cabecera del fragmento y la barra de navegación; se reformateó para seguir el mismo patrón que otras vistas.
+- **equipoDetalle.html**: Se agregó la cabecera del fragmento y la barra de navegación; se agregaron botones para unirse/salir del equipo con lógica condicional; se agregó enlace a "Mis Equipos".
+- **fragments.html**: Se agregó el enlace "Mis Equipos" al menú de navegación (solo visible si el usuario está logueado).
+
+### Cambios en el Modelo
+
+**Equipo.java:**
+- Se agregó el método `removeUsuario(Usuario usuario)`: Remueve un usuario del equipo actualizando ambas colecciones bidireccionales (equipo-usuario y usuario-equipo), siguiendo el mismo patrón que `addUsuario`.
+
+### Cambios en el Servicio
+
+**EquipoService.java:**
+- Se agregó el método `removeUsuarioDeEquipo(Long teamId, Long userId)`: Remueve un usuario de un equipo con validaciones apropiadas. Lanza excepciones si el equipo o usuario no existen.
+- Se agregó el método `usuarioEnEquipo(Long teamId, Long userId)`: Verifica si un usuario pertenece a un equipo específico. Devuelve `true` o `false`.
+
+### Cambios en el Controlador
+
+**EquipoController.java - Nuevos Endpoints:**
+- **GET /equipos/nuevo**: Muestra el formulario para crear un nuevo equipo. Protegido por comprobación de sesión.
+- **POST /equipos/nuevo**: Crea un nuevo equipo y añade automáticamente al usuario creador como miembro. Redirecciona al listado de equipos.
+- **GET /misequipos**: Muestra todos los equipos a los que pertenece el usuario logueado. Protegido por comprobación de sesión.
+- **POST /equipos/{id}/unirse**: Añade al usuario logueado a un equipo específico. Redirecciona al detalle del equipo.
+- **POST /equipos/{id}/salir**: Remueve al usuario logueado de un equipo específico. Redirecciona al listado de equipos.
+
+**Métodos Existentes Modificados:**
+- **GET /equipos/{id}**: Se agregaron los atributos `usuarioEnEquipo` (boolean) y `usuarioLogeadoId` al modelo para renderizar correctamente los botones de unirse/salir.
+
+### Archivos Creados
+
+**Vistas:**
+- **formNuevoEquipo.html**: Formulario para crear un nuevo equipo. Sigue el patrón de otros formularios del proyecto (formLogin.html, formRegistro.html).
+- **misequipos.html**: Vista que muestra todos los equipos a los que pertenece el usuario logueado con opciones para navegar.
+
+### Cambios Adicionales
+
+- Se agregó el enlace "Ver Mis Equipos" en la vista **equipos.html** para facilitar la navegación.
+- Se agregó el botón "Crear Nuevo Equipo" en ambas vistas (equipos.html y misequipos.html).
+- Se actualizó **equipoDetalle.html** con lógica condicional para mostrar el botón "Unirse" o "Salir" según si el usuario ya pertenece al equipo.
+
+### Arquitectura
+
+Se ha mantenido la arquitectura MVC del proyecto:
+- **Modelo**: Relación muchos-a-muchos entre Usuario y Equipo con métodos helper bidireccionales.
+- **Servicio**: Lógica de negocio con validaciones y transacciones.
+- **Controlador**: Manejo de rutas y redirecciones, validación de sesión del usuario.
+- **Vista**: Plantillas Thymeleaf con navegación y formularios.

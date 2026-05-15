@@ -26,6 +26,9 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/equipos}">Equipos</a>
                 </li>
+                <li class="nav-item" th:if="${session.idUsuarioLogeado != null}">
+                    <a class="nav-link" th:href="@{/misequipos}">Mis Equipos</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/about}">Sobre la App</a>
                 </li>
