@@ -106,4 +106,36 @@ public class EquipoService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void removeUsuarioDeEquipo(Long teamId, Long userId){
+        logger.debug("Removiendo usuario " + userId + " del equipo " + teamId);
+        Equipo equipo = equipoRepository.findById(teamId).orElse(null);
+        if(equipo == null){
+            logger.error("No existe equipo con id: " + teamId);
+            throw new EquipoServiceException("Equipo con id = " + teamId + " no existe.");
+        }
+        Usuario usuario = usuarioRepository.findById(userId).orElse(null);
+        if(usuario == null){
+            logger.error("Usuario con id: " + userId + " inexistente al removerse del equipo " + teamId);
+            throw new EquipoServiceException("Usuario con id = " + userId + " no existe.");
+        }
+        equipo.removeUsuario(usuario);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean usuarioEnEquipo(Long teamId, Long userId){
+        logger.debug("Verificando si usuario " + userId + " pertenece al equipo " + teamId);
+        Equipo equipo = equipoRepository.findById(teamId).orElse(null);
+        if(equipo == null){
+            logger.error("No existe equipo con id: " + teamId);
+            throw new EquipoServiceException("Equipo con id = " + teamId + " no existe.");
+        }
+        Usuario usuario = usuarioRepository.findById(userId).orElse(null);
+        if(usuario == null){
+            logger.error("Usuario con id: " + userId + " no existe.");
+            throw new EquipoServiceException("Usuario con id = " + userId + " no existe.");
+        }
+        return equipo.getUsuarios().contains(usuario);
+    }
+
 }
