@@ -62,7 +62,7 @@ El desarrollo de la capa *Service y Model* sigue estrictamente:
 ---
 ### Descargar imagen de docker.
 ```
-    docker pull jheneralbarado/todolist-app:1.2.0
+    docker pull jheneralbarado/p3-todolist-app:1.2.0
 ```
 ---
 ## 🛠️ Novedades de la Release 1.2.0
