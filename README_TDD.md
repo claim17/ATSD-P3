@@ -44,7 +44,7 @@ Lanzar los tests:
 ### Enlaces de Control
 * 📋 **Tablero Trello Oficial:** Trello Board - To Do List App (E3) [[TRELLO](https://trello.com/invite/b/6a057e1780076a27ce1afea6/ATTI2cfbb93a894b4466505436cabb8c28ce4482793F/e3-atsd-to-do-list-new-app)]
 * 💻 **Repositorio GitHub:** [[GITHUB](https://github.com/claim17/ATSD-P3)]
-* 🐳 **Docker Hub:** [[DOCKERHUB]()]
+* 🐳 **Docker Hub:** [[DOCKERHUB](https://hub.docker.com/repository/docker/jheneralbarado/todolist-app/general)]
 
 ----
 ### Creación y Reparto de Issues
@@ -60,7 +60,11 @@ El desarrollo de la capa *Service y Model* sigue estrictamente:
 
 > 📌 **Política de Commits:** Es obligatorio realizar un *commit* por cada fase Test-Código. Si se refactoriza, se hace en un *commit* adicional.
 ---
-
+### Descargar imagen de docker.
+```
+    docker pull jheneralbarado/todolist-app:1.2.0
+```
+---
 ## 🛠️ Novedades de la Release 1.2.0
 
 Esta versión introduce el sistema integral de Equipos con sus correspondientes gestiones,incorporacion de base de datos.
